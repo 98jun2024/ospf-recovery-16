@@ -1,0 +1,60 @@
+name: ospf-recovery-16
+
+x-router: &router  #
+  image: ${FRR_IMAGE:-quay.io/frrouting/frr:10.4.1}
+  pull_policy: never
+  privileged: true
+  volumes:
+    - ./frr/daemons:/etc/frr/daemons:ro
+  networks: [mgmt] #所有路由器接入管理网段（mgnt)
+
+x-host: &host
+  image: ${HOST_IMAGE:-nicolaka/netshoot:latest}
+  pull_policy: never
+  privileged: true
+  command: ["sleep", "infinity"]
+  networks: [mgmt]  #所有主机接入管理网段（mgnt)
+
+services:
+  R1: {<<: *router, networks: {mgmt: {}, r1-r2: {ipv4_address: 10.16.1.2}, r1-r3: {ipv4_address: 10.16.2.2}, lan-h1: {ipv4_address: 172.16.1.2}}}
+  R2: {<<: *router, networks: {mgmt: {}, r1-r2: {ipv4_address: 10.16.1.3}, r2-r4: {ipv4_address: 10.16.3.2}, r2-r6: {ipv4_address: 10.16.4.2}, lan-h2: {ipv4_address: 172.16.2.2}}}
+  R3: {<<: *router, networks: {mgmt: {}, r1-r3: {ipv4_address: 10.16.2.3}, r3-r4: {ipv4_address: 10.16.5.2}, r3-r5: {ipv4_address: 10.16.6.2}}}
+  R4: {<<: *router, networks: {mgmt: {}, r2-r4: {ipv4_address: 10.16.3.3}, r3-r4: {ipv4_address: 10.16.5.3}, r4-r6: {ipv4_address: 10.16.7.2}, r4-r7: {ipv4_address: 10.16.8.2}, r4-r8: {ipv4_address: 10.16.9.2}}}
+  R5: {<<: *router, networks: {mgmt: {}, r3-r5: {ipv4_address: 10.16.6.3}, r5-r7: {ipv4_address: 10.16.10.2}, r5-r9: {ipv4_address: 10.16.11.2}}}
+  R6: {<<: *router, networks: {mgmt: {}, r2-r6: {ipv4_address: 10.16.4.3}, r4-r6: {ipv4_address: 10.16.7.3}, r6-r8: {ipv4_address: 10.16.12.2}}}
+  R7: {<<: *router, networks: {mgmt: {}, r4-r7: {ipv4_address: 10.16.8.3}, r5-r7: {ipv4_address: 10.16.10.3}, r7-r8: {ipv4_address: 10.16.13.2}, r7-r10: {ipv4_address: 10.16.14.2}}}
+  R8: {<<: *router, networks: {mgmt: {}, r4-r8: {ipv4_address: 10.16.9.3}, r6-r8: {ipv4_address: 10.16.12.3}, r7-r8: {ipv4_address: 10.16.13.3}, r8-r10: {ipv4_address: 10.16.15.2}}}
+  R9: {<<: *router, networks: {mgmt: {}, r5-r9: {ipv4_address: 10.16.11.3}, r9-r10: {ipv4_address: 10.16.16.2}, r9-r11: {ipv4_address: 10.16.17.2}}}
+  R10: {<<: *router, networks: {mgmt: {}, r7-r10: {ipv4_address: 10.16.14.3}, r8-r10: {ipv4_address: 10.16.15.3}, r9-r10: {ipv4_address: 10.16.16.3}, r10-r12: {ipv4_address: 10.16.18.2}}}
+  R11: {<<: *router, networks: {mgmt: {}, r9-r11: {ipv4_address: 10.16.17.3}, r11-r12: {ipv4_address: 10.16.19.2}, lan-h3: {ipv4_address: 172.16.3.2}}}
+  R12: {<<: *router, networks: {mgmt: {}, r10-r12: {ipv4_address: 10.16.18.3}, r11-r12: {ipv4_address: 10.16.19.3}, lan-h4: {ipv4_address: 172.16.4.2}}}
+  H1: {<<: *host, networks: {mgmt: {}, lan-h1: {ipv4_address: 172.16.1.10}}}
+  H2: {<<: *host, networks: {mgmt: {}, lan-h2: {ipv4_address: 172.16.2.10}}}
+  H3: {<<: *host, networks: {mgmt: {}, lan-h3: {ipv4_address: 172.16.3.10}}}
+  H4: {<<: *host, networks: {mgmt: {}, lan-h4: {ipv4_address: 172.16.4.10}}}
+
+networks:
+  mgmt: {ipam: {config: [{subnet: 192.168.100.0/24}]}}
+  lan-h1: {ipam: {config: [{subnet: 172.16.1.0/24}]}}
+  lan-h2: {ipam: {config: [{subnet: 172.16.2.0/24}]}} #ipam:IP Address Management**，IP 地址管理配置块。告诉 Docker：这个网络的 IP 规则我要手动定义
+  lan-h3: {ipam: {config: [{subnet: 172.16.3.0/24}]}} #config:IPAM 的配置列表（是一个数组），支持一个网络配多个子网、多个网关
+  lan-h4: {ipam: {config: [{subnet: 172.16.4.0/24}]}}
+  r1-r2: {ipam: {config: [{subnet: 10.16.1.0/29}]}}
+  r1-r3: {ipam: {config: [{subnet: 10.16.2.0/29}]}}
+  r2-r4: {ipam: {config: [{subnet: 10.16.3.0/29}]}}
+  r2-r6: {ipam: {config: [{subnet: 10.16.4.0/29}]}}
+  r3-r4: {ipam: {config: [{subnet: 10.16.5.0/29}]}}
+  r3-r5: {ipam: {config: [{subnet: 10.16.6.0/29}]}}
+  r4-r6: {ipam: {config: [{subnet: 10.16.7.0/29}]}}
+  r4-r7: {ipam: {config: [{subnet: 10.16.8.0/29}]}}
+  r4-r8: {ipam: {config: [{subnet: 10.16.9.0/29}]}}
+  r5-r7: {ipam: {config: [{subnet: 10.16.10.0/29}]}}
+  r5-r9: {ipam: {config: [{subnet: 10.16.11.0/29}]}}
+  r6-r8: {ipam: {config: [{subnet: 10.16.12.0/29}]}}
+  r7-r8: {ipam: {config: [{subnet: 10.16.13.0/29}]}}
+  r7-r10: {ipam: {config: [{subnet: 10.16.14.0/29}]}}
+  r8-r10: {ipam: {config: [{subnet: 10.16.15.0/29}]}}
+  r9-r10: {ipam: {config: [{subnet: 10.16.16.0/29}]}}
+  r9-r11: {ipam: {config: [{subnet: 10.16.17.0/29}]}}
+  r10-r12: {ipam: {config: [{subnet: 10.16.18.0/29}]}}
+  r11-r12: {ipam: {config: [{subnet: 10.16.19.0/29}]}}

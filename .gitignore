@@ -1,0 +1,11 @@
+.env
+state/
+frr/generated/
+results/**
+!results/.gitkeep
+__pycache__/
+*.pyc
+*.log
+*.tmp
+*.swp
+.DS_Store

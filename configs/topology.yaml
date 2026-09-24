@@ -1,0 +1,6 @@
+version: 1
+management_network: mgmt
+router_count: 12
+host_count: 4
+link_count: 19
+lan_count: 4

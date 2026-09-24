@@ -1,0 +1,4 @@
+zebra=yes
+ospfd=yes
+bfdd=yes
+vtysh_enable=yes

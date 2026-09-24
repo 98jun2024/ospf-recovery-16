@@ -1,0 +1,20 @@
+links:
+  - {name: r1-r2, subnet: 10.16.1.0/29, a: R1, ip_a: 10.16.1.2, b: R2, ip_b: 10.16.1.3, cost: 30}
+  - {name: r1-r3, subnet: 10.16.2.0/29, a: R1, ip_a: 10.16.2.2, b: R3, ip_b: 10.16.2.3, cost: 10}
+  - {name: r2-r4, subnet: 10.16.3.0/29, a: R2, ip_a: 10.16.3.2, b: R4, ip_b: 10.16.3.3, cost: 30}
+  - {name: r2-r6, subnet: 10.16.4.0/29, a: R2, ip_a: 10.16.4.2, b: R6, ip_b: 10.16.4.3, cost: 20}
+  - {name: r3-r4, subnet: 10.16.5.0/29, a: R3, ip_a: 10.16.5.2, b: R4, ip_b: 10.16.5.3, cost: 20}
+  - {name: r3-r5, subnet: 10.16.6.0/29, a: R3, ip_a: 10.16.6.2, b: R5, ip_b: 10.16.6.3, cost: 10}
+  - {name: r4-r6, subnet: 10.16.7.0/29, a: R4, ip_a: 10.16.7.2, b: R6, ip_b: 10.16.7.3, cost: 20}
+  - {name: r4-r7, subnet: 10.16.8.0/29, a: R4, ip_a: 10.16.8.2, b: R7, ip_b: 10.16.8.3, cost: 30}
+  - {name: r4-r8, subnet: 10.16.9.0/29, a: R4, ip_a: 10.16.9.2, b: R8, ip_b: 10.16.9.3, cost: 20}
+  - {name: r5-r7, subnet: 10.16.10.0/29, a: R5, ip_a: 10.16.10.2, b: R7, ip_b: 10.16.10.3, cost: 20}
+  - {name: r5-r9, subnet: 10.16.11.0/29, a: R5, ip_a: 10.16.11.2, b: R9, ip_b: 10.16.11.3, cost: 10}
+  - {name: r6-r8, subnet: 10.16.12.0/29, a: R6, ip_a: 10.16.12.2, b: R8, ip_b: 10.16.12.3, cost: 20}
+  - {name: r7-r8, subnet: 10.16.13.0/29, a: R7, ip_a: 10.16.13.2, b: R8, ip_b: 10.16.13.3, cost: 20}
+  - {name: r7-r10, subnet: 10.16.14.0/29, a: R7, ip_a: 10.16.14.2, b: R10, ip_b: 10.16.14.3, cost: 30}
+  - {name: r8-r10, subnet: 10.16.15.0/29, a: R8, ip_a: 10.16.15.2, b: R10, ip_b: 10.16.15.3, cost: 20}
+  - {name: r9-r10, subnet: 10.16.16.0/29, a: R9, ip_a: 10.16.16.2, b: R10, ip_b: 10.16.16.3, cost: 20}
+  - {name: r9-r11, subnet: 10.16.17.0/29, a: R9, ip_a: 10.16.17.2, b: R11, ip_b: 10.16.17.3, cost: 10}
+  - {name: r10-r12, subnet: 10.16.18.0/29, a: R10, ip_a: 10.16.18.2, b: R12, ip_b: 10.16.18.3, cost: 30}
+  - {name: r11-r12, subnet: 10.16.19.0/29, a: R11, ip_a: 10.16.19.2, b: R12, ip_b: 10.16.19.3, cost: 30}
